@@ -83,9 +83,11 @@ const register = async(req, res = response ) => {
 
 
 const login = async(req, res = response) => {
-
     const { username, password } = req.body;
 
+
+    const salt = bcrypt.genSaltSync();
+    console.log(bcrypt.hashSync(password, salt))
 
 
     try {
@@ -93,14 +95,15 @@ const login = async(req, res = response) => {
 
         const user = await User.findOne({ username })
 
-        console.log(user);
+      //  console.log(user);
 
         if (!user) {
-            return res.status(404).json({
+            return res.status(200).json({
                 status: false,
                 message: 'Username inválido.'
             })
         }
+
 
 
         const validarPassword = bcrypt.compareSync( password, user.password)
@@ -108,7 +111,7 @@ const login = async(req, res = response) => {
     //    console.log(bcrypt.genSaltSync(""));
 
         if (!validarPassword) {
-            return res.status(404).json({
+            return res.status(200).json({
                 status: false,
                 message: 'Contraseña inválida.'
             });

@@ -23,16 +23,29 @@ const ComputerSchema = Schema({
     
     specs: {
         processor: {
-            type: String
+            type: Schema.Types.ObjectId,
+            ref: 'Processor'
         },
         ram: {
-            type: String
+            type: Schema.Types.ObjectId,
+            ref: 'RAM'
         },
         storage: {
-            type: String
+            type: {
+                type: String
+            },
+            capacity: {
+                type: Number
+            },
+
         },
-        system: {
-            type: String
+        motherboard: {
+            type: Schema.Types.ObjectId,
+            ref: 'Motherboard'
+        },
+        os: {
+            type: Schema.Types.ObjectId,
+            ref: 'OperatingSystem'
         }
     }
 

@@ -5,6 +5,11 @@ const Switch = require("../models/switch");
 const Vlan = require("../models/vlan");
 const Camera = require("../models/camera");
 const AP = require("../models/ap");
+const OperatingSystem = require("../models/os")
+const Processor = require("../models/processor")
+const RAM = require("../models/ram")
+const Motherboard = require("../models/motherboard")
+
 
 const create = async (req, res = response) => {
 
@@ -588,9 +593,46 @@ const edit = async (req, res = response) => {
 }
 
 
+const getPieces = async (req, res = response) => {
+
+    try {
+            
+            
+        const [rams, motherboards, processors, systems] = await Promise.all([
+            RAM.find(),
+            Motherboard.find(),
+            Processor.find(),
+            OperatingSystem.find(),
+
+        ]);
+
+
+        res.status(200).json({
+            status: true,
+            rams,
+            motherboards,
+            processors,
+            systems
+        })
+
+    
+
+    
+} catch (error) {
+    console.log(error);
+    res.status(500).json({
+        status: false,
+        message: 'Hable con el administrador'
+    })
+}
+
+
+}
+
 
 module.exports = {
     create,
     getAll,
-    edit
+    edit,
+    getPieces
 }

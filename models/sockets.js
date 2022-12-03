@@ -135,7 +135,10 @@ class Sockets {
                  this.io.to( payload.from ).emit('services-list', await getAllServicesByUserId( payload.from ) )
  
                  // Emitir al usuario depto sus reportes
-                 this.io.to( payload.to  ).emit('reports-list', await getAllReportsByUserId( payload.to ) )
+
+                 this.io.to( payload.depto  ).emit('reports-list', await getAllReportsByUserId( payload.depto ) )
+
+//                 this.io.to( payload.to ).emit('reports-list', await getAllReportsByUserId( payload.to ) )
 
             })
 

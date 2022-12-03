@@ -269,14 +269,17 @@ const calificarService = async( payload ) => {
 
 const getAllServicesByUserId = async( userId ) => {
     
-    const services = await Services.find({ assignedTo: userId }, '-user -assignedTo')
+    const services = await Services.find({ assignedTo: userId, createdAt: {
+        $gte: today.toDate(),
+        $lte: moment(today).endOf('day').toDate()
+    } }, '-user -assignedTo')
     .sort({ createdAt: 'asc' })
     .populate('report')
     .populate({
         path: 'report',
         populate: { path: 'department'}
     })
-    return services;
+    return services.reverse;
 
 }
 

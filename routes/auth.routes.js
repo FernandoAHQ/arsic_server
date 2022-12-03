@@ -18,8 +18,8 @@ router.post('/register', [
     check('username', 'El username es requerido.').not().isEmpty(),
     check('name', 'El name es requerido.').not().isEmpty(),
     check('password', 'El password es requerido.').not().isEmpty(),
-    validarJWT,
-    validarADMIN_ROLE
+  //  validarJWT,
+   // validarADMIN_ROLE
 ], register);
 
 
