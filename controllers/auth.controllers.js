@@ -52,13 +52,22 @@ const register = async(req, res = response ) => {
         const accessToken = await generarJWT(savedUser.id, savedUser.role);
 
 
-        // if(user.role == 'SITE_ROLE'){
-        //     Periodo.findOne({isActive: true})
-        //     .ranking.push({
-        //         user: user,
-        //         points: 0
-        //     })
-        // }
+        if(user.role == 'SITE_ROLE'){
+           const currentPeriod = await Periodo.findOne({isActive: true});
+           if(currentPeriod){
+                console.log(currentPeriod.ranking);  
+           await currentPeriod
+                     .ranking.push({
+                         user: user,
+                         points: 0
+                     });
+
+                     await currentPeriod.save();
+           }else{
+            console.log('NO ACTIVE PERIOD FOUND');
+           }
+            
+        }
 
 
 
@@ -95,7 +104,7 @@ const login = async(req, res = response) => {
 
         const user = await User.findOne({ username })
 
-      //  console.log(user);
+        //console.log(user);
 
         if (!user) {
             return res.status(200).json({

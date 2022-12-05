@@ -122,7 +122,7 @@ const create = async(req, res = response ) => {
             await periodoAntiguo.save();
         }
 
-        const period = new Period( req.body );
+        const periodoNuevo = new Period( req.body );
 
         periodoNuevo.ranking = [];
 
@@ -142,13 +142,7 @@ const create = async(req, res = response ) => {
 
         
 
-
-      //  period.isActive = true;
-
-       
-     
-
-        await period.save();
+        await periodoNuevo.save();
 
         
 
@@ -158,7 +152,7 @@ const create = async(req, res = response ) => {
         res.status(201).json({
             status: true,
             message: 'Periodo creado con éxito',
-            period
+            periodoNuevo
         })
 
 
