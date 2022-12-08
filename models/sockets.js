@@ -65,8 +65,9 @@ class Sockets {
                 this.io.to( id ).emit('services-list', await getAllServicesByUserId( id ) )
             } else {
                 socket.join('ADMINS')
+                console.log('ADMIN LOGGED IN')
                 this.io.to( id ).emit('services-all', await getAllServices() )
-
+                console.log(await getAllServices())
             }
 
 
