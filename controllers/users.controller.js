@@ -35,7 +35,7 @@ const Department = require('../models/department');
         }
 
         const [users, totalResults] = await Promise.all([
-            User.find({ role: role.toUpperCase() }).skip((page - 1 )*20).limit(20),            
+            User.find({ role: role.toUpperCase(), isActive:true }).skip((page - 1 )*20).limit(20),            
             User.countDocuments({ role: role.toUpperCase() })
         ]);
 
@@ -123,6 +123,43 @@ const update = async(req, res = response ) => {
 
         res.status(201).json({
             message: `Usuario editado con éxito`,
+            status: true,
+            user
+        })
+
+
+    } catch( error ) {
+        console.log(error);
+        res.status(500).json({
+            status: false,
+            message: 'Hable con el administrador'
+        })
+    }
+
+}
+
+
+
+const deactivate = async(req, res = response ) => {
+
+    const { id } = req.params
+
+    try {
+
+        const doesExist = await User.findById( id );
+
+        if ( !doesExist) {
+            return res.status(400).json({
+                status: false,
+                message: `No existe un usuario con el ID ${ id }.`
+            })
+        }
+
+
+        const user = await User.findByIdAndUpdate( id, {isActive: false}, { new: true })
+
+        res.status(201).json({
+            message: `Usuario eliminado con éxito`,
             status: true,
             user
         })
@@ -256,6 +293,7 @@ module.exports = {
     getAllByRoleOne,
     getUsersIsActive,
     update,
+    deactivate,
     getUsersWithoutDepartment,
     changeIsActive
 }

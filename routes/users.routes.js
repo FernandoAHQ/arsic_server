@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getAllByRoleOne, getAllByRole, update, getUsersIsActive, getUsersWithoutDepartment, changeIsActive } = require('../controllers/users.controller');
+const { getAllByRoleOne, getAllByRole, update, getUsersIsActive, getUsersWithoutDepartment, changeIsActive, deactivate } = require('../controllers/users.controller');
 const { validarADMIN_ROLE, validarJWT } = require('../middlewares/validar-jwt.middleware');
 
 const router = Router();
@@ -20,6 +20,12 @@ router.put('/update/:id', [
     validarJWT,
     validarADMIN_ROLE
 ], update);
+
+
+router.delete('/delete/:id', [
+   // validarJWT,
+   // validarADMIN_ROLE
+], deactivate);
 
 
 module.exports = router; 
