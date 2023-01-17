@@ -286,6 +286,32 @@ const changeIsActive = async(req, res = response ) => {
 
 }
 
+const getActiveByRole = async(req, res = response ) => {
+
+    const {role} = req.params
+
+    try {
+        const users = await User.find({ role: role, isActive: true });      
+        console.log(role)  
+        console.log(users)
+
+        res.status(200).json({
+            status: true,
+            users
+        })
+
+
+    } catch( error ) {
+        console.log(error);
+        res.status(500).json({
+            status: false,
+            message: 'Hable con el administrador'
+        })
+    }
+
+
+}
+
 
 
 module.exports = {
@@ -295,5 +321,6 @@ module.exports = {
     update,
     deactivate,
     getUsersWithoutDepartment,
-    changeIsActive
+    changeIsActive,
+    getActiveByRole
 }
