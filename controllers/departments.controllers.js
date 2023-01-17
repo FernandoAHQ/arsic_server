@@ -9,7 +9,7 @@ const getAll = async(req, res = response ) => {
 
     try {
 
-        const departments = await Department.find({}).populate('user')
+        const departments = await Department.find({isActive:true}).populate('user')
 
         res.status(201).json({
             status: true,
