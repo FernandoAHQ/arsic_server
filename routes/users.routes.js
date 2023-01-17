@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getAllByRoleOne, getAllByRole, update, getUsersIsActive, getUsersWithoutDepartment, changeIsActive, deactivate } = require('../controllers/users.controller');
+const { getAllByRoleOne, getAllByRole, update, getUsersIsActive, getUsersWithoutDepartment, changeIsActive, deactivate, getActiveByRole } = require('../controllers/users.controller');
 const { validarADMIN_ROLE, validarJWT } = require('../middlewares/validar-jwt.middleware');
 
 const router = Router();
@@ -15,6 +15,7 @@ router.get('/allz/:role', getAllByRoleOne);
 
 router.get('/all/:role', getAllByRole);
 
+router.get('/all/active/:role', getActiveByRole);
 
 router.put('/update/:id', [
     validarJWT,
