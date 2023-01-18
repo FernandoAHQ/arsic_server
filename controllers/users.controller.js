@@ -155,8 +155,9 @@ const deactivate = async(req, res = response ) => {
             })
         }
 
+        const newName = `${doesExist.username}-${doesExist._id}` 
 
-        const user = await User.findByIdAndUpdate( id, {isActive: false}, { new: true })
+        const user = await User.findByIdAndUpdate( id, {isActive: false, username:newName}, { new: true })
 
         res.status(201).json({
             message: `Usuario eliminado con éxito`,
