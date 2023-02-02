@@ -129,6 +129,73 @@ const assign = async (req, res = response) => {
 }
 
 
+
+const unassign = async (req, res = response) => {
+
+    try {
+      
+        const { task, assignment } = req.body;
+
+        const taskExists = await Task.findById(task);
+
+        const assignmentAmount = taskExists.asignments.length;
+
+            if(taskExists){
+ 
+                taskExists.asignments = taskExists.asignments.filter((as)=>{
+                    return as.id !== assignment;
+                });
+              
+         
+
+                    if(assignmentAmount > taskExists.asignments.length){
+                        await taskExists.save();
+                        return res.status(202).json({
+                            status: true,
+                            message: 'Asignación eliminada con éxito',
+                            taskExists
+                        })                       
+                    }else{
+                        return res.status(404).json({
+                            status: true,
+                            message: 'No existe tal asignacion',
+                            task
+                        })
+                    }
+                    //check if assigned, else returned not assigned
+                    //delete assignment
+
+ 
+ 
+
+
+            
+            }else{
+               return  res.status(404).json({
+                    status: false,
+                    message: 'La tarea no especificada no existe',
+                })
+            }
+
+            //  const newTask = new Task(req.body);
+
+            //  await newTask.save();
+          
+
+
+        
+    } catch (error) {
+        console.log(error);
+       return res.status(500).json({
+            status: false,
+            message: 'Hable con el administrador'
+        })
+    }
+   
+
+}
+
+
 const getAll = async (req, res = response) => {
 
     const page = Number(req.query.page) || 1;
@@ -183,7 +250,7 @@ const getAllRegistered = async (req, res = response) => {
             })
                 .skip((page - 1 )*20)
                 .limit(20),  
-                Task.countDocuments()
+                TaskRegister.countDocuments()
         ]);
 
 
@@ -215,5 +282,6 @@ module.exports = {
     getAll,
     registerTask,
     assign,
+    unassign,
     getAllRegistered
 }

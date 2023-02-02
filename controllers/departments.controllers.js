@@ -101,7 +101,7 @@ const update = async(req, res = response ) => {
         }
 
 
-        const department = await Department.findByIdAndUpdate( id, req.body, { new: true })
+        const department = await Department.findByIdAndUpdate( id, {...req.body}, { new: true })
             .populate('user');
 
         res.status(201).json({
@@ -123,9 +123,41 @@ const update = async(req, res = response ) => {
 
 
 
+const del = async(req, res = response ) => {
+
+    const { id } = req.params;
+     try {
+
+        const doesExist = await Department.findById(id);
+         if ( !doesExist) {
+            return res.status(400).json({
+                status: false,
+                message: `No existe un departamento con el ID ${ id }.`
+            })
+        }
+
+        await Department.findByIdAndUpdate(id, {isActive: false});
+      
+        res.status(202).json({
+            message: `Departamento eliminado con éxito`,
+            status: true,
+        })
+
+
+    } catch( error ) {
+        console.log(error);
+        res.status(500).json({
+            status: false,
+            message: 'Hable con el administrador'
+        })
+    }
+
+}
+
 
 module.exports = {
     getAll,
     create,
-    update
+    update,
+    del
 }

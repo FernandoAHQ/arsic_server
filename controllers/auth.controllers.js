@@ -104,7 +104,6 @@ const login = async(req, res = response) => {
 
         const user = await User.findOne({ username })
 
-        //console.log(user);
 
         if (!user) {
             return res.status(200).json({
@@ -129,7 +128,7 @@ const login = async(req, res = response) => {
 
         let deptartament;
         if ( user.role == 'USER_ROLE' ) {
-            deptartament = await Department.findOne({ user }, '_id name ubication')
+            deptartament = await Department.findOne({ user:user, isActive:true }, '_id name ubication')
 
             if ( !deptartament ) {
                 return res.status(404).json({
