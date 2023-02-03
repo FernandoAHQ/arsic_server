@@ -252,6 +252,31 @@ const getAll = async (req, res = response) => {
                         Computer.find()
                             .skip((page - 1 )*20)
                             .limit(20)
+                            .populate('specs')
+                            .populate({
+                                path: 'specs',
+                                populate: {
+                                    path: 'os'
+                                }
+                            }) 
+                            .populate({
+                                path: 'specs',
+                                populate: {
+                                    path: 'processor'
+                                }
+                            }) 
+                              .populate({
+                                path: 'specs',
+                                populate: {
+                                    path: 'ram'
+                                }
+                            }) 
+                            .populate({
+                                path: 'specs',
+                                populate: {
+                                    path: 'motherboard'
+                                }
+                            }) 
                             .populate('department')
                             .populate({
                                 path: 'department',
