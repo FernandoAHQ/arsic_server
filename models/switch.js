@@ -55,8 +55,12 @@ const SwitchSchema = new Schema(
         poePorts:{
             type: String,
         },
-        console:{
+        consolePort:{
             type: Boolean
+        },
+        isActive: {
+            type: Boolean,
+            default: true
         }
         
     }

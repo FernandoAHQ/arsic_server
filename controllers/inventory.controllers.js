@@ -249,7 +249,7 @@ const getAll = async (req, res = response) => {
             
             
                     const [computers, totalResults] = await Promise.all([
-                        Computer.find()
+                        Computer.find({ isActive: true })
                             .skip((page - 1 )*20)
                             .limit(20)
                             .populate('department')
@@ -258,7 +258,11 @@ const getAll = async (req, res = response) => {
                                 populate: {
                                     path: 'user'
                                 }
-                            }),  
+                            })
+                            .populate('specs.motherboard')
+                            .populate('specs.os')
+                            .populate('specs.ram')
+                            .populate('specs.processor'),  
                             Computer.countDocuments()
                     ]);
             
@@ -291,7 +295,7 @@ const getAll = async (req, res = response) => {
         
         
                 const [switches, totalResults] = await Promise.all([
-                    Switch.find()
+                    Switch.find({ isActive: true })
                         .skip((page - 1 )*20)
                         .limit(20),
                         Switch.countDocuments()
@@ -629,10 +633,170 @@ const getPieces = async (req, res = response) => {
 
 }
 
+// const deactivateComputer = async(req, res = response ) => {
+
+//     const { id } = req.params
+
+//     try {
+
+//         const doesExist = await Computer.findById( id );
+
+//         if ( !doesExist) {
+//             return res.status(400).json({
+//                 status: false,
+//                 message: `No existe una computadora con el ID ${ id }.`
+//             })
+//         }
+
+//         const newName = `${doesExist.folio}-${doesExist._id}` 
+
+//         const computer = await Computer.findByIdAndUpdate( id, {isActive: false, folio:newName})
+
+//         res.status(201).json({
+//             message: `Usuario eliminado con éxito`,
+//             status: true,
+//             computer
+//         })
+
+
+//     } catch( error ) {
+//         console.log(error);
+//         res.status(500).json({
+//             status: false,
+//             message: 'Hable con el administrador'
+//         })
+//     }
+
+// }
+
+
+const deactivate = async (req, res = response) => {
+
+    var category = req.params.category;
+    const  id  = req.params.id
+
+
+    console.log(id);
+
+
+        switch(category){
+            case 'computers':{
+
+                try {
+
+                    const doesExist = await Computer.findById( id );
+            
+                    if ( !doesExist) {
+                        return res.status(400).json({
+                            status: false,
+                            message: `No existe una computadora con el ID ${ id }.`
+                        })
+                    }
+            
+                    const newName = `${doesExist.folio}-${doesExist._id}` 
+            
+                    const computer = await Computer.findByIdAndUpdate( id, {isActive: false, folio:newName})
+            
+                    res.status(201).json({
+                        message: `Computadora eliminada con éxito`,
+                        status: true,
+                        computer
+                    })
+            
+            
+                } catch( error ) {
+                    console.log(error);
+                    res.status(500).json({
+                        status: false,
+                        message: 'Hable con el administrador'
+                    })
+                }
+            
+    break;
+            }
+ 
+            case 'switches':{
+
+                try {
+
+                    const doesExist = await Switch.findById( id );
+            
+                    if ( !doesExist) {
+                        return res.status(400).json({
+                            status: false,
+                            message: `No existe un switch con ese ID ${ id }.`
+                        })
+                    }
+            
+                    const newName = `${doesExist.folio}-${doesExist._id}` 
+            
+                    const switches = await Switch.findByIdAndUpdate( id, {isActive: false, folio:newName})
+            
+                    res.status(201).json({
+                        message: `Switch eliminado con éxito`,
+                        status: true,
+                        switches
+                    })
+            
+            
+                } catch( error ) {
+                    console.log(error);
+                    res.status(500).json({
+                        status: false,
+                        message: 'Hable con el administrador'
+                    })
+                }
+            
+    break;
+                
+            }
+
+            case 'vlans':{
+
+                return res.status(400).json({
+                    status: false,
+                    message: `${ category } ${id}.`,
+                })
+
+            
+            }
+            
+            case 'cameras':{
+
+                return res.status(400).json({
+                    status: false,
+                    message: `${ category } ${id}.`,
+                })
+
+            
+            }
+            case 'aps':{
+
+                return res.status(400).json({
+                    status: false,
+                    message: `${ category } ${id}.`,
+                })
+                
+            
+            }
+
+            default:{
+                return res.status(400).json({
+                    status: false,
+                    message: `${ category } no es una categoría valida.`,
+                })
+            }
+        }
+
+   
+
+ }
+
 
 module.exports = {
     create,
     getAll,
     edit,
-    getPieces
+    getPieces,
+    deactivate
 }

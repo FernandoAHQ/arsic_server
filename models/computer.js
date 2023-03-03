@@ -20,6 +20,10 @@ const ComputerSchema = Schema({
         type: String,
         default: "Active"
     },
+    isActive: {
+        type: Boolean,
+        default: true
+    },
     
     specs: {
         processor: {
