@@ -65,7 +65,7 @@ class Server {
         this.configSockets();
 
         // Inicializar Server
-        this.server.listen( this.port, () => {
+        this.server.listen( this.port, '10.1.41.55' ,() => {
             console.log('Servidor corriendo en puerto:', this.port );
         })
     }
