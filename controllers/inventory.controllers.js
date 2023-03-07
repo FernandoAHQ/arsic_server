@@ -753,14 +753,14 @@ const deactivate = async (req, res = response) => {;
                         })
                     }
             
-                    const newName = `${doesExist.folio}-${doesExist._id}` 
+                    const newName = `${doesExist.name}-${doesExist._id}` 
             
-                    const switches = await Switch.findByIdAndUpdate( id, {isActive: false, folio:newName})
+                    const switches = await Switch.findByIdAndUpdate( id, {isActive: false, name:newName})
             
                     res.status(201).json({
                         message: `Switch eliminado con éxito`,
                         status: true,
-                        switches
+                        switch: switches
                     })
             
             
@@ -778,10 +778,35 @@ const deactivate = async (req, res = response) => {;
 
             case 'vlans':{
 
-                return res.status(400).json({
-                    status: false,
-                    message: `${ category } ${id}.`,
-                })
+                try {
+
+                    const doesExist = await Vlan.findById( id );
+            
+                    if ( !doesExist) {
+                        return res.status(400).json({
+                            status: false,
+                            message: `No existe una VLAN con ese ID: ${ id }.`
+                        })
+                    }
+            
+                    const newName = `${doesExist.vlan}-${doesExist._id}` 
+            
+                    const vlan = await Switch.findByIdAndUpdate( id, {isActive: false, vlan:newName})
+            
+                    res.status(201).json({
+                        message: `VLAN eliminada con éxito`,
+                        status: true,
+                        vlan
+                    })
+            
+            
+                } catch( error ) {
+                    console.log(error);
+                    res.status(500).json({
+                        status: false,
+                        message: 'Hable con el administrador'
+                    })
+                }
 
             
             }
@@ -797,10 +822,35 @@ const deactivate = async (req, res = response) => {;
             }
             case 'aps':{
 
-                return res.status(400).json({
-                    status: false,
-                    message: `${ category } ${id}.`,
-                })
+                try {
+
+                    const doesExist = await AP.findById( id );
+            
+                    if ( !doesExist) {
+                        return res.status(400).json({
+                            status: false,
+                            message: `No existe un AP con ese ID: ${ id }.`
+                        })
+                    }
+            
+                    const newName = `${doesExist.etiqueta}-${doesExist._id}` 
+            
+                    const ap = await Switch.findByIdAndUpdate( id, {isActive: false, etiqueta:newName})
+            
+                    res.status(201).json({
+                        message: `AP eliminado con éxito`,
+                        status: true,
+                        ap
+                    })
+            
+            
+                } catch( error ) {
+                    console.log(error);
+                    res.status(500).json({
+                        status: false,
+                        message: 'Hable con el administrador'
+                    })
+                }
                 
             
             }
