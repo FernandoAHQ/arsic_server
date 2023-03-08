@@ -42,6 +42,10 @@ const VLANSchema = new Schema(
             type: String,
             required: true
         },
+        isActive: {
+            type: Boolean,
+            default: true
+        },
         
     }
 );

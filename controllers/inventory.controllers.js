@@ -355,7 +355,7 @@ const getAll = async (req, res = response) => {
         
         
                 const [vlans, totalResults] = await Promise.all([
-                    Vlan.find()
+                    Vlan.find({ isActive: true })
                         .skip((page - 1 )*20)
                         .limit(20),
                         Vlan.countDocuments()
@@ -427,7 +427,7 @@ const getAll = async (req, res = response) => {
         
         
                 const [aps, totalResults] = await Promise.all([
-                    AP.find()
+                    AP.find({ isActive: true })
                         .skip((page - 1 )*20)
                         .limit(20),  
                         AP.countDocuments()
@@ -548,14 +548,14 @@ const edit = async (req, res = response) => {
 
 
                 if(Switch.findById(req.body.id)){
-                    const pcdb = await Switch.findByIdAndUpdate(req.body.id, req.body, {new: true}); //({serie: req.body.id})
-                    console.log(pcdb);
+                    const updatedSwitch = await Switch.findByIdAndUpdate(req.body.id, req.body, {new: true}); //({serie: req.body.id})
+                    console.log(updatedSwitch);
                     /// await pcdb.save();
     
-                    res.status(201).json({
+                    return res.status(201).json({
                         status: true,
                         message: 'Switch actualizada con éxito',
-                        switch: pcdb
+                        switch: updatedSwitch
                     })
                 }else{
                     return res.status(400).json({
@@ -700,8 +700,7 @@ const deactivate = async (req, res = response) => {;
     var category = req.params.category;
     const  id  = req.params.id
 
-
-    console.log(id);
+ 
 
 
         switch(category){
@@ -722,7 +721,7 @@ const deactivate = async (req, res = response) => {;
             
                     const computer = await Computer.findByIdAndUpdate( id, {isActive: false, folio:newName})
             
-                    res.status(201).json({
+                return    res.status(201).json({
                         message: `Computadora eliminada con éxito`,
                         status: true,
                         computer
@@ -731,7 +730,7 @@ const deactivate = async (req, res = response) => {;
             
                 } catch( error ) {
                     console.log(error);
-                    res.status(500).json({
+                  return  res.status(500).json({
                         status: false,
                         message: 'Hable con el administrador'
                     })
@@ -757,7 +756,7 @@ const deactivate = async (req, res = response) => {;
             
                     const switches = await Switch.findByIdAndUpdate( id, {isActive: false, name:newName})
             
-                    res.status(201).json({
+                  return  res.status(201).json({
                         message: `Switch eliminado con éxito`,
                         status: true,
                         switch: switches
@@ -766,7 +765,7 @@ const deactivate = async (req, res = response) => {;
             
                 } catch( error ) {
                     console.log(error);
-                    res.status(500).json({
+                  return  res.status(500).json({
                         status: false,
                         message: 'Hable con el administrador'
                     })
@@ -791,9 +790,9 @@ const deactivate = async (req, res = response) => {;
             
                     const newName = `${doesExist.vlan}-${doesExist._id}` 
             
-                    const vlan = await Switch.findByIdAndUpdate( id, {isActive: false, vlan:newName})
+                    const vlan = await Vlan.findByIdAndUpdate( id, {isActive: false, vlan:newName})
             
-                    res.status(201).json({
+                  return res.status(201).json({
                         message: `VLAN eliminada con éxito`,
                         status: true,
                         vlan
@@ -802,7 +801,7 @@ const deactivate = async (req, res = response) => {;
             
                 } catch( error ) {
                     console.log(error);
-                    res.status(500).json({
+                   return res.status(500).json({
                         status: false,
                         message: 'Hable con el administrador'
                     })
@@ -832,12 +831,11 @@ const deactivate = async (req, res = response) => {;
                             message: `No existe un AP con ese ID: ${ id }.`
                         })
                     }
-            
+                    
                     const newName = `${doesExist.etiqueta}-${doesExist._id}` 
             
-                    const ap = await Switch.findByIdAndUpdate( id, {isActive: false, etiqueta:newName})
-            
-                    res.status(201).json({
+                    const ap = await AP.findByIdAndUpdate( id, {isActive: false, etiqueta:newName})
+                    return res.status(201).json({
                         message: `AP eliminado con éxito`,
                         status: true,
                         ap
@@ -846,7 +844,7 @@ const deactivate = async (req, res = response) => {;
             
                 } catch( error ) {
                     console.log(error);
-                    res.status(500).json({
+                    return res.status(500).json({
                         status: false,
                         message: 'Hable con el administrador'
                     })

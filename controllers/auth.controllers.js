@@ -141,7 +141,7 @@ const login = async(req, res = response) => {
         const accessToken = await generarJWT(user.id, user.role);
 
 
-        res.status(200).json({
+        return res.status(200).json({
             accessToken,
             deptartament,
             menu: getMenuFrontEnd( user.role ),
