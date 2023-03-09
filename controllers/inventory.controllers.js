@@ -288,7 +288,7 @@ const getAll = async (req, res = response) => {
                             .populate('specs.os')
                             .populate('specs.ram')
                             .populate('specs.processor'),  
-                            Computer.countDocuments()
+                            Computer.countDocuments({isActive: true})
                     ]);
             
             
@@ -323,7 +323,7 @@ const getAll = async (req, res = response) => {
                     Switch.find({ isActive: true })
                         .skip((page - 1 )*20)
                         .limit(20),
-                        Switch.countDocuments()
+                        Switch.countDocuments({isActive: true})
                 ]);
         
         
@@ -358,7 +358,7 @@ const getAll = async (req, res = response) => {
                     Vlan.find({ isActive: true })
                         .skip((page - 1 )*20)
                         .limit(20),
-                        Vlan.countDocuments()
+                        Vlan.countDocuments({isActive: true})
                 ]);
         
         
@@ -393,7 +393,7 @@ const getAll = async (req, res = response) => {
                     Camera.find()
                         .skip((page - 1 )*20)
                         .limit(20),
-                        Camera.countDocuments()
+                        Camera.countDocuments({isActive: true})
                 ]);
         
         
@@ -430,7 +430,7 @@ const getAll = async (req, res = response) => {
                     AP.find({ isActive: true })
                         .skip((page - 1 )*20)
                         .limit(20),  
-                        AP.countDocuments()
+                        AP.countDocuments({isActive: true})
                 ]);
         
         
