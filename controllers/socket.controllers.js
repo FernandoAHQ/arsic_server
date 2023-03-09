@@ -268,7 +268,6 @@ const calificarService = async( payload ) => {
 
 
 const getAllServicesByUserId = async( userId ) => {
-    
     const services = await Services.find({ assignedTo: userId, createdAt: {
         $gte: today.toDate(),
         $lte: moment(today).endOf('day').toDate()
@@ -279,6 +278,22 @@ const getAllServicesByUserId = async( userId ) => {
         path: 'report',
         populate: { path: 'department'}
     })
+    console.log("SERVICES FOUND: ", services.length);
+    return services.reverse();
+
+}
+const getAllServicesByUserIdz = async( userId ) => {
+    const services = await Services.find({ assignedTo: userId, createdAt: {
+        $gte: today.toDate(),
+        $lte: moment(today).endOf('day').toDate()
+    } }, '-user -assignedTo')
+    .sort({ createdAt: 'asc' })
+    .populate('report')
+    .populate({
+        path: 'report',
+        populate: { path: 'department'}
+    })
+    console.log("SERVICES FOUND: ", services.length);
     return services.reverse;
 
 }
@@ -301,7 +316,6 @@ const getAllServices = async( ) => {
         path: 'report',
         populate: { path: 'department'}
     })
-       // console.log(services[0].createdAt.toDateString())
     return services;
 
 }
@@ -462,6 +476,7 @@ module.exports = {
     saveReport,
     getAllReportsByUserId,
     getAllServicesByUserId,
+    getAllServicesByUserIdz,
     editReport,
     calificarReport,
     calificarService,

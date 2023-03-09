@@ -55,7 +55,6 @@ class Sockets {
             
             // Unir al usuario a una sala
             socket.join( id );
-            
 
             if ( role == 'USER_ROLE' ) {
                 // Si es un departamento, emitir su lista de reportes
@@ -67,7 +66,6 @@ class Sockets {
                 socket.join('ADMINS')
                 console.log('ADMIN LOGGED IN')
                 this.io.to( id ).emit('services-all', await getAllServices() )
-                console.log(await getAllServices())
             }
 
 
@@ -106,12 +104,12 @@ class Sockets {
 
             socket.on('assigned', async ( payload ) => {
                 const service = await assignService( payload );
-                console.log(service)
+        
                 //devolver al admin el listado
                 this.io.to( "ADMINS" ).emit('services-all', await getAllServices() )
 
                 // Emitir al user la lista
-                this.io.to( payload.to ).emit('services-list', await getAllServicesByUserId( payload.to ) )
+               this.io.to( payload.to ).emit('services-list', await getAllServicesByUserId( payload.to ) )
 
                 // Emitir al usuario depto sus reportes
                 this.io.to( payload.depto  ).emit('reports-list', await getAllReportsByUserId( payload.depto ) )
